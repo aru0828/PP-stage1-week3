@@ -21,6 +21,12 @@ function load() {
             ulDom.removeChild(ulDom.firstChild);
         }
 
+        //
+        if(loadPage*8 > data.result.results.length){
+            loadPage--;
+            alert('沒有更多資料~')
+        }
+
         for (let i = 0; i <= loadPage*8-1; i++) {
            
             //取得單筆資料
@@ -30,12 +36,20 @@ function load() {
             //新增<div class="imgContainer">
             let imgContainer = document.createElement('div');
             imgContainer.setAttribute('class', 'imgContainer')
+            
             //新增img標籤 並設定src
             let imgDom = document.createElement('img');
-            let imgUrl = singleData.file.toLowerCase().indexOf('.jpg');
-            imgUrl = singleData.file.slice(0, imgUrl + 4);
-            imgDom.setAttribute('src', imgUrl);
+            let imgUrl = singleData.file.toLowerCase().indexOf('http:', 5);
+            //imgUrl = -1 代表file中只有一個網址
+            if(imgUrl===-1){
+                imgDom.setAttribute('src', singleData.file);
+            }else{
+                imgUrl = singleData.file.slice(0, imgUrl);
+                imgDom.setAttribute('src', imgUrl);
+            }
+            
             imgContainer.appendChild(imgDom)
+            
             //新增p標籤 顯示地名
             let pDom = document.createElement('p');
             let pText = document.createTextNode(data.result.results[i].stitle);

@@ -10,7 +10,11 @@ with urllib.request.urlopen(req) as response:
 
 with open('Q1.txt', mode='w', encoding='utf-8') as txtFile:
     for vlist in vlists:
-        imgUrl = vlist['file'].find('.jpg')
-        imgUrl = vlist['file'][0:imgUrl+4]
+        imgUrl = vlist['file'].lower().find('http:', 5)
+        #imgUrl = -1 代表file中只有一個網址
+        if imgUrl == -1:
+            imgUrl = vlist['file']
+        else:
+            imgUrl = vlist['file'][0:imgUrl]
         text = f"{vlist['stitle']}, {vlist['longitude']}, {vlist['latitude']}, {imgUrl}"
         txtFile.write(f"{text}\n")
